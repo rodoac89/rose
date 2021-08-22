@@ -1,5 +1,5 @@
 import os
-#import discord
+import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -19,7 +19,9 @@ def load_cogs(client):
 
 def main():
     load_dotenv()
-    bot = commands.Bot(command_prefix="!")
+    intents = discord.Intents.default()
+    intents.members = True
+    bot = commands.Bot(command_prefix="!", intents=intents)
     if load_cogs(bot):
         bot.run(os.getenv("DISCORD_TOKEN"))
     else:

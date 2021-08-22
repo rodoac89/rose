@@ -5,6 +5,7 @@ from discord.ext import commands
 class Welcome(commands.Cog):
     def __init__(self, c):
         self.client = c
+        self.allowed_mentions = discord.AllowedMentions(everyone=True)
 
     # Events
     @commands.Cog.listener()
@@ -13,17 +14,8 @@ class Welcome(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        print(f'{member} has joined')
-        log_channel = self.client.get_channel(878788309906784273)
-        embed = discord.Embed(color=0x00FF00)
-        embed.set_author(
-            name=f"{member} has joined the server.", icon_url=f"{member.avatar_url}")
-        await log_channel.send(content=None, embed=embed)
-    # Commands
-
-    @commands.command()
-    async def ping(self, ctx):
-        await ctx.send('Pong!')
+        channel = discord.utils.get(member.guild.text_channels, name="welcome")
+        await channel.send(f"Hey @everyone! {member} se ha unido a la fiesta :D", allowed_mentions=self.allowed_mentions)
 
 
 def setup(client):
